@@ -33,6 +33,8 @@ app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 
 app.use('/api/v1', routes);
 
+app.use(express.static('./public'));
+
 app.use(notFound);
 app.use(errorHandler);
 
