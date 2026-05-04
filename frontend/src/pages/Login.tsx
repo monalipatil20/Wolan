@@ -80,7 +80,7 @@ export default function Login() {
             </Button>
           </form>
           <div className="text-center text-xs text-muted-foreground py-2">
-            Demo: admin@gmail.com / password123 (create in backend if needed)
+            Demo: admin@wolan.com / password123
           </div>
         </CardContent>
       </Card>
