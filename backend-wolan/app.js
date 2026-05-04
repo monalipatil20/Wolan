@@ -34,11 +34,6 @@ app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 
 app.use('/api/v1', routes);
 
-// Wildcard route to serve HTML files from public folder
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
 app.use(express.static('./public'));
 
 app.use(notFound);
