@@ -6,6 +6,7 @@ const path = require('path');
 
 const app = require('./app');
 const connectDB = require('./config/db');
+const User = require('./models/User');
 const { initSockets } = require('./sockets');
 
 const PORT = process.env.PORT || 5000;
@@ -164,10 +165,31 @@ const optimizeServer = (server) => {
 /**
  * Main server startup
  */
+const seedDefaultAdmin = async () => {
+  const defaultEmail = process.env.DEFAULT_ADMIN_EMAIL || 'admin@wolan.com';
+  const defaultPassword = process.env.DEFAULT_ADMIN_PASSWORD || 'password123';
+  const defaultFullName = process.env.DEFAULT_ADMIN_FULL_NAME || 'Admin';
+
+  const userCount = await User.countDocuments();
+  if (userCount === 0) {
+    console.log('No users found. Creating default super_admin account.');
+    await User.create({
+      full_name: defaultFullName,
+      email: defaultEmail,
+      password: defaultPassword,
+      role: 'super_admin',
+      is_active: true,
+      last_login: new Date(),
+    });
+    console.log(`Default admin created: ${defaultEmail}`);
+  }
+};
+
 const startServer = async () => {
   try {
     validateEnvironment();
     await connectDB();
+    await seedDefaultAdmin();
 
     const server = http.createServer(app);
     initSockets(server);
