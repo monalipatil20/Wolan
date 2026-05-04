@@ -92,10 +92,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       toast.success('Login successful!');
     } catch (error: any) {
-      toast.error(
+      const errorMessage =
         error.response?.data?.message ||
-          'Invalid credentials or server error'
-      );
+        error.message ||
+        'Invalid credentials or server error';
+
+      toast.error(errorMessage);
 
       throw error;
     }
